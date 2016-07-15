@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context="cl.cutiko.androidshuffle.MainActivity">
+    tools:context=".views.MainActivity">
 
     <ImageButton
         android:id="@+id/playBtn"
