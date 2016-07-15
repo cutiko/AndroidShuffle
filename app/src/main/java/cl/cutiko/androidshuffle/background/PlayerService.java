@@ -57,4 +57,16 @@ public class PlayerService extends Service {
             cursor.close();
         }
     }
+
+    public void playSong() {
+
+    }
+
+    public void stopSong() {
+
+    }
+
+    public String getSongName() {
+        return "";
+    }
 }

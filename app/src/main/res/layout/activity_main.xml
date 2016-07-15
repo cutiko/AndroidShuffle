@@ -35,12 +35,13 @@
             android:textSize="16dp" />
 
         <ImageButton
-            android:src="@mipmap/ic_stop_white_48dp"
+            android:id="@+id/stopBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_control_button"
             android:padding="16dp"
             android:scaleType="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:src="@mipmap/ic_stop_white_48dp" />
 
     </LinearLayout>
 

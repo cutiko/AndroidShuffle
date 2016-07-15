@@ -7,7 +7,9 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import cl.cutiko.androidshuffle.R;
 import cl.cutiko.androidshuffle.background.PlayerService;
@@ -53,11 +55,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setPlay(){
+        ImageButton playBtn = (ImageButton) findViewById(R.id.playBtn);
+        final TextView songInfo = (TextView) findViewById(R.id.songInfo);
 
+        playBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isBound) {
+                    playerService.playSong();
+                    songInfo.setText(playerService.getSongName());
+                }
+            }
+        });
     }
 
     private void setStop(){
-
+        ImageButton stopBtn = (ImageButton) findViewById(R.id.stopBtn);
+        stopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isBound) {
+                    playerService.stopSong();
+                }
+            }
+        });
     }
 
 
