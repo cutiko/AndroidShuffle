@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageButton;
 
 import cl.cutiko.androidshuffle.R;
 import cl.cutiko.androidshuffle.background.PlayerService;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PlayerService playerService;
     private ServiceConnection serviceConnection;
+    private boolean isBound = false;
 
     @Override
     protected void onStart() {
@@ -30,10 +32,13 @@ public class MainActivity extends AppCompatActivity {
             public void onServiceConnected(ComponentName name, IBinder service) {
                 PlayerService.LocalBinder binder = (PlayerService.LocalBinder) service;
                 playerService = binder.getService();
+                playerService.setSongs();
+                isBound = true;
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
+                isBound = false;
             }
         };
     }
@@ -43,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        setPlay();
+        setStop();
+    }
+
+    private void setPlay(){
+
+    }
+
+    private void setStop(){
+
     }
 
 

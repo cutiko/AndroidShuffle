@@ -8,9 +8,9 @@ public class Song {
     private String name;
     private long id;
 
-    public Song(String name, String id) {
-        this.name = name;
+    public Song(String id, String name) {
         this.id = Long.parseLong(id);
+        this.name = name;
     }
 
     public String getName() {
