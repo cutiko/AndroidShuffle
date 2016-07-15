@@ -89,20 +89,25 @@ public class PlayerService extends Service {
     }
 
     private long random() {
-        int max = songList.size()+2;
-        int min = 0;
-        Random random = new Random();
-        int position = random.nextInt(max-min)+min;
-
-        long songId =  0L;
-        if (position > songList.size()+1) {
-            random();
+        int size = songList.size();
+        if (size == 1) {
+            this.position = 0;
+            return songList.get(0).getId();
         } else {
-            songId = songList.get(position).getId();
-        }
+            int max = size+2;
+            int min = 0;
+            Random random = new Random();
+            int position = random.nextInt(max-min)+min;
 
-        this.position = position;
-        return songId;
+            long songId =  0L;
+            if (position > songList.size()+1) {
+                random();
+            } else {
+                songId = songList.get(position).getId();
+            }
+            this.position = position;
+            return songId;
+        }
     }
 
     public void stopSong() {
