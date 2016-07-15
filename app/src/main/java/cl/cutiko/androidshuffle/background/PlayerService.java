@@ -74,6 +74,12 @@ public class PlayerService extends Service {
                     mp.start();
                 }
             });
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    playSong();
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
