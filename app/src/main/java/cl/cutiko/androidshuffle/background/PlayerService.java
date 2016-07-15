@@ -20,7 +20,7 @@ public class PlayerService extends Service {
     }
 
     public class LocalBinder extends Binder {
-        protected PlayerService getService() {
+        public PlayerService getService() {
             return  PlayerService.this;
         }
     }
