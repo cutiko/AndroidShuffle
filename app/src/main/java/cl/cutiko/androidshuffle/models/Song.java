@@ -17,7 +17,7 @@ public class Song {
         return name;
     }
 
-    public Song(long id) {
-        this.id = id;
+    public long getId() {
+        return id;
     }
 }

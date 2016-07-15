@@ -1,6 +1,7 @@
 package cl.cutiko.androidshuffle.background;
 
 import android.app.Service;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -11,8 +12,10 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cl.cutiko.androidshuffle.models.Song;
 
@@ -22,6 +25,7 @@ public class PlayerService extends Service {
 
     private MediaPlayer mediaPlayer = new MediaPlayer();
     private List<Song> songList = new ArrayList<>();
+    private int position = 0;
 
     public PlayerService() {
     }
@@ -59,14 +63,46 @@ public class PlayerService extends Service {
     }
 
     public void playSong() {
+        Uri songUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, random());
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(getApplicationContext(), songUri);
+            mediaPlayer.prepareAsync();
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private long random() {
+        int max = songList.size()+2;
+        int min = 0;
+        Random random = new Random();
+        int position = random.nextInt(max-min)+min;
+
+        long songId =  0L;
+        if (position > songList.size()+1) {
+            random();
+        } else {
+            songId = songList.get(position).getId();
+        }
+
+        this.position = position;
+        return songId;
     }
 
     public void stopSong() {
-
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
     }
 
     public String getSongName() {
-        return "";
+        return songList.get(position).getName();
     }
 }
