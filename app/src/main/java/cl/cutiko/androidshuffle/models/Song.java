@@ -5,18 +5,19 @@ package cl.cutiko.androidshuffle.models;
  */
 public class Song {
 
-    private String id, name;
+    private String name;
+    private long id;
 
-    public Song(String id, String name) {
-        this.id = id;
+    public Song(String name, String id) {
         this.name = name;
-    }
-
-    public String getId() {
-        return id;
+        this.id = Long.parseLong(id);
     }
 
     public String getName() {
         return name;
+    }
+
+    public Song(long id) {
+        this.id = id;
     }
 }
