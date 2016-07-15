@@ -63,25 +63,27 @@ public class PlayerService extends Service {
     }
 
     public void playSong() {
-        Uri songUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, random());
-        try {
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(getApplicationContext(), songUri);
-            mediaPlayer.prepareAsync();
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    playSong();
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (songList.size() > 0) {
+            Uri songUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, random());
+            try {
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(getApplicationContext(), songUri);
+                mediaPlayer.prepareAsync();
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.start();
+                    }
+                });
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        playSong();
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -109,6 +111,10 @@ public class PlayerService extends Service {
     }
 
     public String getSongName() {
-        return songList.get(position).getName();
+        if (songList.size() > 0) {
+            return songList.get(position).getName();
+        } else {
+            return "something else";
+        }
     }
 }

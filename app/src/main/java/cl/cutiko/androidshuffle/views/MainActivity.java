@@ -5,8 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,11 +24,19 @@ public class MainActivity extends AppCompatActivity {
     private PlayerService playerService;
     private ServiceConnection serviceConnection;
     private boolean isBound = false;
+    private static final int READ_EXTERNAL_CONTENT_PERMISSION = 37;
 
     @Override
     protected void onStart() {
         super.onStart();
-        ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_CONTENT_PERMISSION);
+        } else {
+            bindToPlayer();
+        }
+    }
+
+    private void bindToPlayer(){
         Intent intent = new Intent(this, PlayerService.class);
         serviceConnection = getServiceConnection();
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -90,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == READ_EXTERNAL_CONTENT_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                bindToPlayer();
+            }
         }
     }
 }
