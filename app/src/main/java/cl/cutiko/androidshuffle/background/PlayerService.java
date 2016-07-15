@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cl.cutiko.androidshuffle.R;
 import cl.cutiko.androidshuffle.models.Song;
 
 public class PlayerService extends Service {
@@ -114,7 +115,7 @@ public class PlayerService extends Service {
         if (songList.size() > 0) {
             return songList.get(position).getName();
         } else {
-            return "something else";
+            return getString(R.string.background_player_service_warning);
         }
     }
 }

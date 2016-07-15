@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">AndroidShuffle</string>
-
+    <string name="background.player_service.warning">No hay canciones</string>
 </resources>
