@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection;
     private boolean isBound = false;
     private static final int READ_EXTERNAL_CONTENT_PERMISSION = 37;
+    private TextView songInfo;
 
     @Override
     protected void onStart() {
@@ -64,13 +65,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        songInfo = (TextView) findViewById(R.id.songInfo);
         setPlay();
         setStop();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isBound && songInfo != null) {
+            songInfo.setText(playerService.getSongName());
+        }
+    }
+
     private void setPlay(){
         ImageButton playBtn = (ImageButton) findViewById(R.id.playBtn);
-        final TextView songInfo = (TextView) findViewById(R.id.songInfo);
 
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
