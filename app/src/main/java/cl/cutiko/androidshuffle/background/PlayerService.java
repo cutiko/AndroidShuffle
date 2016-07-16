@@ -76,9 +76,7 @@ public class PlayerService extends Service {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         mp.start();
-                        Intent broadcastSongName = new Intent();
-                        broadcastSongName.setAction(SONG_UPDATE);
-                        sendBroadcast(broadcastSongName);
+                        broadcastSongName();
                     }
                 });
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -127,5 +125,11 @@ public class PlayerService extends Service {
         } else {
             return getString(R.string.background_player_service_warning);
         }
+    }
+
+    private void broadcastSongName(){
+        Intent broadcastSongName = new Intent();
+        broadcastSongName.setAction(SONG_UPDATE);
+        sendBroadcast(broadcastSongName);
     }
 }
