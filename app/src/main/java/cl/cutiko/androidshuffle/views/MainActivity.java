@@ -1,9 +1,11 @@
 package cl.cutiko.androidshuffle.views;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isBound = false;
     private static final int READ_EXTERNAL_CONTENT_PERMISSION = 37;
     private TextView songInfo;
+    private BroadcastReceiver receiver;
+    private IntentFilter intentFilter;
 
     @Override
     protected void onStart() {
@@ -65,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        setReceiver();
+        setFilter();
         songInfo = (TextView) findViewById(R.id.songInfo);
         setPlay();
         setStop();
@@ -76,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         if (isBound && songInfo != null) {
             songInfo.setText(playerService.getSongName());
         }
+        registerReceiver(receiver, intentFilter);
+
     }
 
     private void setPlay(){
@@ -86,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isBound) {
                     playerService.playSong();
-                    songInfo.setText(playerService.getSongName());
                 }
             }
         });
@@ -105,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (isBound) {
@@ -120,5 +133,26 @@ public class MainActivity extends AppCompatActivity {
                 bindToPlayer();
             }
         }
+    }
+
+    private void setFilter(){
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(PlayerService.SONG_UPDATE);
+    }
+
+    private void setReceiver(){
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null) {
+                    String action = intent.getAction();
+                    if (action != null) {
+                        if (PlayerService.SONG_UPDATE.equals(action)) {
+                            songInfo.setText(playerService.getSongName());
+                        }
+                    }
+                }
+            }
+        };
     }
 }

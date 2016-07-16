@@ -28,6 +28,8 @@ public class PlayerService extends Service {
     private List<Song> songList = new ArrayList<>();
     private int position = 0;
 
+    public static final String SONG_UPDATE = "cl.cutiko.androidshuffle.background.PlayerService.UPDATE_SONG";
+
     public PlayerService() {
     }
 
@@ -74,6 +76,9 @@ public class PlayerService extends Service {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         mp.start();
+                        Intent broadcastSongName = new Intent();
+                        broadcastSongName.setAction(SONG_UPDATE);
+                        sendBroadcast(broadcastSongName);
                     }
                 });
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
