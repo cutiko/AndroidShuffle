@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,7 +74,7 @@ public class PlayerService extends Service {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         mp.start();
-                        broadcastSongName();
+                        updateUser();
                     }
                 });
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -120,9 +118,12 @@ public class PlayerService extends Service {
         }
     }
 
-    private void broadcastSongName(){
+    private void updateUser(){
         Intent broadcastSongName = new Intent();
         broadcastSongName.setAction(SONG_UPDATE);
         sendBroadcast(broadcastSongName);
+
+        SongNotification notification = new SongNotification();
+        notification.notify(this, getSongName(), position);
     }
 }
