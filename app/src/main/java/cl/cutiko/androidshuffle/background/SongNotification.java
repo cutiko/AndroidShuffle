@@ -25,6 +25,7 @@ public class SongNotification {
         final Resources res = context.getResources();
         final Bitmap picture = BitmapFactory.decodeResource(res, R.mipmap.ic_play_circle_filled_white_48dp);
         final Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent notificationIntent = PendingIntent.getActivity(context, number, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
