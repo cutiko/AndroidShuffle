@@ -97,17 +97,10 @@ public class PlayerService extends Service {
             this.position = 0;
             return songList.get(0).getId();
         } else {
-            int max = size+2;
             int min = 0;
             Random random = new Random();
-            int position = random.nextInt(max-min)+min;
-
-            long songId =  0L;
-            if (position > songList.size()+1) {
-                random();
-            } else {
-                songId = songList.get(position).getId();
-            }
+            int position = random.nextInt(size-min)+min;
+            long songId = songList.get(position).getId();
             this.position = position;
             return songId;
         }
